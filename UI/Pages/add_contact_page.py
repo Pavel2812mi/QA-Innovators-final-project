@@ -15,6 +15,7 @@ state_province = (By.ID, "stateProvince")
 postal_code = (By.ID, "postalCode")
 country = (By.ID, "country")
 button = (By.ID, "submit")
+error_message = (By.XPATH, "//span[@id='error']")
 
 
 class AddContactPage(BasePage):
@@ -98,3 +99,10 @@ class AddContactPage(BasePage):
         self.enter_postal_code(pc)
         self.enter_country(cntr)
         self.click_submit_button()
+
+    def get_error_message(self, message):
+        """Get error message"""
+        if self.wait_value_in_element_appears(error_message, message):
+            el = self.find_element_with_wait(error_message)
+            return el.text
+        return None

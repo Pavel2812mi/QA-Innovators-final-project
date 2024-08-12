@@ -22,6 +22,16 @@ ct = "City"
 stpr = "State"
 pc = "123456"
 cntr = "Belarus"
+inv_pn = "123"
+inv_eml = "123"
+inv_bd = "123"
+error_message_add_new_contact = ("Contact validation failed: birthdate: "
+                                 "Birthdate is invalid, email: Email is "
+                                 "invalid, phone: Phone number is invalid")
+error_message_empty_add_new_contact = ("Contact validation failed: firstName: "
+                                       "Path `firstName` is required., "
+                                       "lastName: Path `lastName` is "
+                                       "required.")
 
 # ContactDetails
 url3 = "https://thinking-tester-contact-list.herokuapp.com/contactDetails"

@@ -4,3 +4,4 @@ mypy
 ruff
 pylint
 pytest
+selenium

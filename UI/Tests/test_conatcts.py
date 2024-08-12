@@ -114,3 +114,57 @@ def test_delete_contact(driver):
     cdp.wait_url(driver, test_data.url_contain1)
     clp = ContactListPage(driver)
     assert clp.find_row() is False
+
+
+@pytest.mark.view_contact
+def test_view_contact(driver, created_contact):
+    """Test view contact successfully"""
+    clp = ContactListPage(driver)
+    actual_result = clp.get_all_row_data()
+    expected_result = [
+        f"{test_data.fn} {test_data.ln}", test_data.bd, test_data.eml,
+        test_data.pn, f"{test_data.str1} {test_data.str2}",
+        f"{test_data.ct} {test_data.stpr} {test_data.pc}", test_data.cntr]
+    assert actual_result == expected_result
+
+
+@pytest.mark.view_contact
+def test_view_empty_contact(driver, login_user):
+    """Test view empty list contact successfully"""
+    clp = ContactListPage(driver)
+    assert clp.find_row() is False
+
+
+@pytest.mark.add_contact
+def test_add_contact_with_inv_data(driver, login_user):
+    """Test add contact with invalid data unsuccessfully"""
+    clp = ContactListPage(driver)
+    clp.click_add_button()
+    clp.wait_url(driver, test_data.url_contain2)
+    assert test_data.url2 in driver.current_url
+
+    acp = AddContactPage(driver)
+    acp.add_contact(test_data.fn, test_data.ln, test_data.inv_bd,
+                    test_data.inv_eml, test_data.inv_pn, test_data.str1,
+                    test_data.str2, test_data.ct, test_data.stpr,
+                    test_data.pc, test_data.cntr)
+    assert (acp.get_error_message(test_data.error_message_add_new_contact)
+            == test_data.error_message_add_new_contact)
+
+
+@pytest.mark.add_contact
+def test_add_contact_with_empty_data(driver, login_user):
+    """Test add contact with empty data unsuccessfully"""
+    clp = ContactListPage(driver)
+    clp.click_add_button()
+    clp.wait_url(driver, test_data.url_contain2)
+    assert test_data.url2 in driver.current_url
+
+    acp = AddContactPage(driver)
+    acp.add_contact("", "", test_data.bd,
+                    test_data.eml, test_data.pn, test_data.str1,
+                    test_data.str2, test_data.ct, test_data.stpr,
+                    test_data.pc, test_data.cntr)
+    assert (acp.get_error_message(
+            test_data.error_message_empty_add_new_contact) ==
+            test_data.error_message_empty_add_new_contact)
