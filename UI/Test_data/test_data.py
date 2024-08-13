@@ -25,9 +25,11 @@ cntr = "Belarus"
 inv_pn = "123"
 inv_eml = "123"
 inv_bd = "123"
+inv_pc = "abc"
 error_message_add_new_contact = ("Contact validation failed: birthdate: "
-                                 "Birthdate is invalid, email: Email is "
-                                 "invalid, phone: Phone number is invalid")
+                                 "Birthdate is invalid, email: Email "
+                                 "is invalid, phone: Phone number is "
+                                 "invalid, postalCode: Postal code is invalid")
 error_message_empty_add_new_contact = ("Contact validation failed: firstName: "
                                        "Path `firstName` is required., "
                                        "lastName: Path `lastName` is "

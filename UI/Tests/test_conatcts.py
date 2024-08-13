@@ -138,7 +138,7 @@ def test_add_contact_with_inv_data(driver, login_user):
     acp.add_contact(test_data.fn, test_data.ln, test_data.inv_bd,
                     test_data.inv_eml, test_data.inv_pn, test_data.str1,
                     test_data.str2, test_data.ct, test_data.stpr,
-                    test_data.pc, test_data.cntr)
+                    test_data.inv_pc, test_data.cntr)
     assert (acp.get_error_message(test_data.error_message_add_new_contact)
             == test_data.error_message_add_new_contact)
 
