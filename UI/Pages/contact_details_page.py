@@ -96,6 +96,6 @@ class ContactDetailsPage(BasePage):
             self.get_birthdate_text(), self.get_email_text(),
             self.get_phone_text(), self.get_address1_text(),
             self.get_address2_text(), self.get_city_text(),
-            self.get_state_province_text(),self.get_postal_code_text(),
+            self.get_state_province_text(), self.get_postal_code_text(),
             self.get_country_text()
             ]
