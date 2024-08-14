@@ -65,15 +65,7 @@ def test_edit_contact(driver, login_user, created_contact):
     ]
     actual_result = cdp.get_all_contact_details_data()
     assert actual_result == expected_result
-    ecp.wait_url(driver, test_data.url_contain3)
-    assert cdp.get_first_name_text() == test_data.fn_1
-    cdp = ContactDetailsPage(driver)
-    cdp.click_delete_button()
-    alert = driver.switch_to.alert
-    alert.accept()
-    cdp.wait_url(driver, test_data.url_contain1)
-    clp = ContactListPage(driver)
-    assert clp.find_row() is False
+    cdp.click_return_button()
 
 
 @pytest.mark.delete_contact

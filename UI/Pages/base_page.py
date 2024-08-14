@@ -19,7 +19,7 @@ class BasePage:
         """Find element method"""
         return self.driver.find_element(*selector)
 
-    def find_element_with_wait(self, selector, timeout=5):
+    def find_element_with_wait(self, selector, timeout=3):
         """Find element with wait"""
         try:
             element = WebDriverWait(self.driver, timeout).until(
@@ -32,7 +32,7 @@ class BasePage:
                   f"{timeout} seconds.")
             return None
 
-    def wait_value_in_element_appears(self, selector, text, timeout=5):
+    def wait_value_in_element_appears(self, selector, text, timeout=3):
         """Wait until value in element appears"""
         try:
             WebDriverWait(self.driver, timeout).until(

@@ -5,6 +5,7 @@ from UI.Pages.base_page import BasePage
 
 edit_button = (By.ID, "edit-contact")
 delete_button = (By.ID, "delete")
+return_button = (By.ID, "return")
 first_name = (By.ID, "firstName")
 last_name = (By.ID, "lastName")
 birthdate = (By.ID, "birthdate")
@@ -32,6 +33,11 @@ class ContactDetailsPage(BasePage):
     def click_delete_button(self):
         """Click delete button"""
         btn = self.find_element(delete_button)
+        btn.click()
+
+    def click_return_button(self):
+        """Click return button"""
+        btn = self.find_element(return_button)
         btn.click()
 
     def get_first_name_text(self):
