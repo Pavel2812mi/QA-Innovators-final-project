@@ -5,8 +5,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 import uuid
 
-from UI.Test_data import test_data
-
 
 class SignUpPage:
     """Class for interacting with the sign-up page"""
@@ -111,7 +109,8 @@ def test_invalid_data_sign_up(driver):
         "password: Path `password` (`w1`) is shorter than "
         "the minimum allowed length (7)."
     )
-    assert error_message == expected_error, "No error message for invalid email"
+    assert error_message == expected_error, ("No error message "
+                                             "for invalid email")
 
 
 @pytest.mark.signup
@@ -157,5 +156,6 @@ def test_cancel_sign_up(driver):
     sp.enter_password("TempPass123!")
     sp.click_cancel()
 
-    assert driver.current_url == "https://thinking-tester-contact-list.herokuapp.com/login", \
+    assert driver.current_url == ("https://thinking-tester-cont"
+                                  "act-list.herokuapp.com/login"), \
         "User was not redirected to the home page after cancel"
