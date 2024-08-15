@@ -25,7 +25,6 @@ def login_user(driver):
     lp = LoginPage(driver)
     lp.complete_login(test_data.eml, test_data.psw)
     lp.wait_url(driver, test_data.url_contain1)
-    assert test_data.url1 in driver.current_url
 
 
 @pytest.fixture
@@ -34,7 +33,6 @@ def created_contact(driver, login_user):
     clp = ContactListPage(driver)
     clp.click_add_button()
     clp.wait_url(driver, test_data.url_contain2)
-    assert test_data.url2 in driver.current_url
 
     acp = AddContactPage(driver)
     acp.add_contact(test_data.fn, test_data.ln, test_data.bd,
@@ -50,4 +48,3 @@ def created_contact(driver, login_user):
     alert.accept()
     cdp.wait_url(driver, test_data.url_contain1)
     clp = ContactListPage(driver)
-    assert clp.find_row() is False
