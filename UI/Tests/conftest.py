@@ -1,6 +1,11 @@
 """Conftest module"""
 import pytest
 from selenium import webdriver
+
+from UI.Pages.add_contact_page import AddContactPage
+from UI.Pages.contact_details_page import ContactDetailsPage
+from UI.Pages.contact_list_page import ContactListPage
+from UI.Pages.login_page import LoginPage
 from UI.Test_data import test_data
 
 
@@ -12,3 +17,37 @@ def driver():
     chrome.get(test_data.url)
     yield chrome
     chrome.quit()
+
+
+@pytest.fixture
+def login_user(driver):
+    """Login as user."""
+    lp = LoginPage(driver)
+    lp.complete_login(test_data.eml, test_data.psw)
+    lp.wait_url(driver, test_data.url_contain1)
+    assert test_data.url1 in driver.current_url
+
+
+@pytest.fixture
+def created_contact(driver, login_user):
+    """Create new contact."""
+    clp = ContactListPage(driver)
+    clp.click_add_button()
+    clp.wait_url(driver, test_data.url_contain2)
+    assert test_data.url2 in driver.current_url
+
+    acp = AddContactPage(driver)
+    acp.add_contact(test_data.fn, test_data.ln, test_data.bd,
+                    test_data.eml1, test_data.pn, test_data.str1,
+                    test_data.str2, test_data.ct, test_data.stpr,
+                    test_data.pc, test_data.cntr)
+    acp.wait_url(driver, test_data.url_contain1)
+    yield acp
+    clp.click_first_row()
+    cdp = ContactDetailsPage(driver)
+    cdp.click_delete_button()
+    alert = driver.switch_to.alert
+    alert.accept()
+    cdp.wait_url(driver, test_data.url_contain1)
+    clp = ContactListPage(driver)
+    assert clp.find_row() is False
