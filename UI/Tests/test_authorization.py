@@ -33,7 +33,8 @@ def test_login_invalid_password(driver):
     lp = LoginPage(driver)
     lp.complete_login(test_data.eml, test_data.invalid_psw)
     assert lp.find_element_with_wait(error, 10)
-    logger.logger.info("Test login with incorrect password successfully complete")
+    logger.logger.info("Test login with incorrect password"
+                       " successfully complete")
 
 
 @pytest.mark.login_negative
@@ -42,7 +43,8 @@ def test_login_without_cred(driver):
     lp = LoginPage(driver)
     lp.click_login_button()
     assert lp.find_element_with_wait(error, 10)
-    logger.logger.info("Test login without entering credentials successfully complete")
+    logger.logger.info("Test login without entering credentials"
+                       " successfully complete")
 
 
 @pytest.mark.logout

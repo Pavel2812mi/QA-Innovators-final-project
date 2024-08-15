@@ -40,7 +40,8 @@ class BasePage:
             )
             return True
         except TimeoutException:
-            logger.logger.error(f"The text: {text} wasn't appeared in: {selector}.")
+            logger.logger.error(f"The text: {text} wasn't"
+                                f" appeared in: {selector}.")
             return False
 
     def wait_url(self, driver, data):
@@ -49,5 +50,6 @@ class BasePage:
             WebDriverWait(driver, 10).until(EC.url_contains(data))
             return True
         except TimeoutException:
-            logger.logger.error(f"Operation timed out while waiting for the URL to contain {data}")
+            logger.logger.error(f"Operation timed out while waiting"
+                                f" for the URL to contain {data}")
             return False
