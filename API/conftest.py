@@ -1,3 +1,7 @@
+"""
+Fixtures for API tests, including authorization
+and data cleaning.
+"""
 import pytest
 import requests
 
@@ -16,8 +20,8 @@ def auth_token():
     response = requests.post(f"{MAIN_URL}/users/login", json=user_data)
     if response.status_code == 200:
         return response.json().get("token")
-    else:
-        raise Exception(f"Ошибка авторизации: {response.status_code}, {response.text}")
+    raise RuntimeError(f"Ошибка авторизации: "
+                       f"{response.status_code}, {response.text}")
 
 
 @pytest.fixture(scope="session")

@@ -1,3 +1,6 @@
+"""
+API tests to check the functionality of the contact list.
+"""
 import requests
 
 
@@ -14,7 +17,7 @@ def test_delete_user_unauthorized(base_url):
                                             "authenticate.")
 
 
-def test_add_contact_success(auth_token, base_url, cleanup_contacts):
+def test_add_contact_success(auth_token, base_url, _cleanup_contacts):
     """TC014: Add Contact - 201 Created"""
     url = f"{base_url}/contacts"
     headers = {
@@ -70,7 +73,7 @@ def test_add_contact_unauthorized(base_url):
                                             "authenticate.")
 
 
-def test_add_contact_bad_request(auth_token, base_url, cleanup_contacts):
+def test_add_contact_bad_request(auth_token, base_url, _cleanup_contacts):
     """TC016: Add Contact - 400 Bad Request"""
     url = f"{base_url}/contacts"
     headers = {
@@ -98,7 +101,7 @@ def test_add_contact_bad_request(auth_token, base_url, cleanup_contacts):
             "Path `lastName` is required.")
 
 
-def test_get_contact_list_success(auth_token, base_url, cleanup_contacts):
+def test_get_contact_list_success(auth_token, base_url, _cleanup_contacts):
     """TC017: Get Contact List - 200 OK"""
     url = f"{base_url}/contacts"
     headers = {
