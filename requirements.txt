@@ -3,5 +3,7 @@ pycodestyle
 mypy
 ruff
 pylint
-pytest
-selenium
+pytest~=8.3.2
+selenium~=4.23.1
+
+requests~=2.32.3
