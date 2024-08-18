@@ -215,7 +215,7 @@ def test_update_user_success(user_with_token, base_url):
     """TC006: Update User - 200 Ok"""
     url = f"{base_url}/users/me"
     headers = {
-        "Authorization": f"Bearer {user_with_token["token"]}",
+        "Authorization": f"Bearer {user_with_token['token']}",
     }
     first_name = generate_string(3, 6)
     last_name = generate_string(5, 10)
