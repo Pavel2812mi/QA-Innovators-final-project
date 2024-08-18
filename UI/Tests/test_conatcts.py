@@ -7,7 +7,7 @@ from UI.Pages.add_contact_page import AddContactPage, first_name
 from UI.Pages.contact_details_page import ContactDetailsPage
 from UI.Pages.edit_contact_page import EditContactPage
 from UI.Test_data import test_data
-import logger
+from logger import logger
 
 
 @pytest.mark.add_contact
@@ -41,7 +41,7 @@ def test_add_contact(driver, login_user):
     cdp.wait_url(driver, test_data.url_contain1)
     clp = ContactListPage(driver)
     assert clp.find_row() is False
-    logger.logger.info("Test add contact successfully complete")
+    logger.info("Test add contact successfully complete")
 
 
 @pytest.mark.edit_contact
@@ -69,7 +69,7 @@ def test_edit_contact(driver, login_user, created_contact):
     actual_result = cdp.get_all_contact_details_data()
     assert actual_result == expected_result
     cdp.click_return_button()
-    logger.logger.info("Test edit contact successfully complete")
+    logger.info("Test edit contact successfully complete")
 
 
 @pytest.mark.delete_contact
@@ -101,7 +101,7 @@ def test_delete_contact(driver):
     cdp.wait_url(driver, test_data.url_contain1)
     clp = ContactListPage(driver)
     assert clp.find_row() is False
-    logger.logger.info("Test delete contact successfully complete")
+    logger.info("Test delete contact successfully complete")
 
 
 @pytest.mark.view_contact

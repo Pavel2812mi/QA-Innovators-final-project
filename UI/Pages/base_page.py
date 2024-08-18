@@ -2,7 +2,7 @@
 from selenium.common import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import logger
+from logger import logger
 
 
 class BasePage:
@@ -28,7 +28,7 @@ class BasePage:
             )
             return element
         except TimeoutException:
-            logger.logger.error(f"The element: {selector} wasn't found "
+            logger.error(f"The element: {selector} wasn't found "
                                 f"in {timeout} seconds.")
             return None
 
@@ -40,7 +40,7 @@ class BasePage:
             )
             return True
         except TimeoutException:
-            logger.logger.error(f"The text: {text} wasn't"
+            logger.error(f"The text: {text} wasn't"
                                 f" appeared in: {selector}.")
             return False
 
@@ -50,6 +50,6 @@ class BasePage:
             WebDriverWait(driver, 10).until(EC.url_contains(data))
             return True
         except TimeoutException:
-            logger.logger.error(f"Operation timed out while waiting"
+            logger.error(f"Operation timed out while waiting"
                                 f" for the URL to contain {data}")
             return False
