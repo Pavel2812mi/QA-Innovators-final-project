@@ -29,7 +29,7 @@ class BasePage:
             return element
         except TimeoutException:
             logger.error(f"The element: {selector} wasn't found "
-                                f"in {timeout} seconds.")
+                         f"in {timeout} seconds.")
             return None
 
     def wait_value_in_element_appears(self, selector, text, timeout=3):
@@ -41,7 +41,7 @@ class BasePage:
             return True
         except TimeoutException:
             logger.error(f"The text: {text} wasn't"
-                                f" appeared in: {selector}.")
+                         f" appeared in: {selector}.")
             return False
 
     def wait_url(self, driver, data):
@@ -51,5 +51,5 @@ class BasePage:
             return True
         except TimeoutException:
             logger.error(f"Operation timed out while waiting"
-                                f" for the URL to contain {data}")
+                         f" for the URL to contain {data}")
             return False
