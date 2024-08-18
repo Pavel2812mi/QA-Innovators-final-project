@@ -220,9 +220,6 @@ def test_update_user_success(user_with_token, base_url):
     first_name = generate_string(3, 6)
     last_name = generate_string(5, 10)
     email = generate_email()
-    print(f"Test {first_name}")
-    print(f"Test {last_name}")
-    print(f"Test {email.lower()}")
     body = {
         "firstName": first_name,
         "lastName": last_name,
@@ -230,7 +227,6 @@ def test_update_user_success(user_with_token, base_url):
         "password": "myNewPassword"
     }
     response = requests.patch(url, headers=headers, json=body)
-    print(response.status_code, response.json())
     assert response.status_code == 200
     assert response.json().get("firstName") == first_name
     assert response.json().get("lastName") == last_name

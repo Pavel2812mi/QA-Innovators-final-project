@@ -61,7 +61,6 @@ def register_user(base_url):
         "email": email,
         "password": "Tester11"
     }
-    print(f"em R {email}")
     response = requests.post(url, json=body)
     test_data.u_email = response.json().get("user").get("email")
     u_data = response.json().get("user")
@@ -79,8 +78,6 @@ def user_with_token(register_user, base_url):
         "email": u_data["email"],
         "password": u_data["password"]
     })
-    print(f"em A {u_data["email"]}")
-    print(f"psw A {u_data["password"]}")
     if response.status_code == 200:
         token = response.json().get("token")
         return {
