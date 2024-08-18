@@ -41,6 +41,19 @@ def test_add_contact(driver, login_user):
     assert clp.find_row() is False
 
 
+def test_cancel_add_contact(driver, login_user):
+    """Test cancel add contact successfully"""
+
+    clp = ContactListPage(driver)
+    clp.click_add_button()
+    clp.wait_url(driver, test_data.url_contain2)
+    assert test_data.url2 in driver.current_url
+
+    acp = AddContactPage(driver)
+    acp.click_cancel_button()
+    assert test_data.url1 in driver.current_url
+
+
 @pytest.mark.edit_contact
 def test_edit_contact(driver, login_user, created_contact):
     """Test edit contact successfully"""
@@ -62,6 +75,30 @@ def test_edit_contact(driver, login_user, created_contact):
         test_data.eml1_1, test_data.pn_1, test_data.str1_1,
         test_data.str2_1, test_data.ct_1, test_data.stpr_1,
         test_data.pc_1, test_data.cntr_1
+    ]
+    actual_result = cdp.get_all_contact_details_data()
+    assert actual_result == expected_result
+    cdp.click_return_button()
+
+
+def test_cancel_edit_contact(driver, login_user, created_contact):
+    """Test cancel edit contact successfully"""
+
+    clp = ContactListPage(driver)
+    clp.click_first_row()
+
+    cdp = ContactDetailsPage(driver)
+    cdp.click_edit_button()
+    cdp.wait_url(driver, test_data.url_contain4)
+    ecp = EditContactPage(driver)
+    ecp.wait_value_in_element_appears(first_name, test_data.fn)
+    ecp.click_cancel_button()
+    ecp.wait_value_in_element_appears(first_name, test_data.fn)
+    expected_result = [
+        test_data.fn, test_data.ln, test_data.bd,
+        test_data.eml1, test_data.pn, test_data.str1,
+        test_data.str2, test_data.ct, test_data.stpr,
+        test_data.pc, test_data.cntr
     ]
     actual_result = cdp.get_all_contact_details_data()
     assert actual_result == expected_result
