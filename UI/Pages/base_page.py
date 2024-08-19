@@ -2,6 +2,7 @@
 from selenium.common import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from logger import logger
 
 
 class BasePage:
@@ -27,9 +28,8 @@ class BasePage:
             )
             return element
         except TimeoutException:
-            # make it as log
-            print(f"The element: {selector} wasn't found in "
-                  f"{timeout} seconds.")
+            logger.error(f"The element: {selector} wasn't found "
+                         f"in {timeout} seconds.")
             return None
 
     def wait_value_in_element_appears(self, selector, text, timeout=3):
@@ -40,10 +40,16 @@ class BasePage:
             )
             return True
         except TimeoutException:
-            # make it as log
-            print(f"The text: {text} wasn't appeared in: {selector}.")
+            logger.error(f"The text: {text} wasn't"
+                         f" appeared in: {selector}.")
             return False
 
     def wait_url(self, driver, data):
         """Wait until the URL contains the specified fragment"""
-        WebDriverWait(driver, 10).until(EC.url_contains(data))
+        try:
+            WebDriverWait(driver, 10).until(EC.url_contains(data))
+            return True
+        except TimeoutException:
+            logger.error(f"Operation timed out while waiting"
+                         f" for the URL to contain {data}")
+            return False

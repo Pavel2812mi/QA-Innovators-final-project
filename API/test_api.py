@@ -19,7 +19,7 @@ def test_delete_user_unauthorized(base_url):
                                             "authenticate.")
 
 
-def test_add_contact_success(auth_token, base_url, _cleanup_contacts):
+def test_add_contact_success(auth_token, base_url, cleanup_contacts):
     """TC014: Add Contact - 201 Created"""
     url = f"{base_url}/contacts"
     headers = {
@@ -75,7 +75,7 @@ def test_add_contact_unauthorized(base_url):
                                             "authenticate.")
 
 
-def test_add_contact_bad_request(auth_token, base_url, _cleanup_contacts):
+def test_add_contact_bad_request(auth_token, base_url, cleanup_contacts):
     """TC016: Add Contact - 400 Bad Request"""
     url = f"{base_url}/contacts"
     headers = {
@@ -103,7 +103,7 @@ def test_add_contact_bad_request(auth_token, base_url, _cleanup_contacts):
             "Path `lastName` is required.")
 
 
-def test_get_contact_list_success(auth_token, base_url, _cleanup_contacts):
+def test_get_contact_list_success(auth_token, base_url, cleanup_contacts):
     """TC017: Get Contact List - 200 OK"""
     url = f"{base_url}/contacts"
     headers = {
@@ -231,3 +231,177 @@ def test_update_user_success(user_with_token, base_url):
     assert response.json().get("firstName") == first_name
     assert response.json().get("lastName") == last_name
     assert response.json().get("email") == email.lower()
+    
+    
+def test_update_contact_success(auth_token, base_url,
+                                created_contact, cleanup_contacts):
+    """TC019: Successful update contact
+     via correct test data and using PUT method"""
+    url = f"{base_url}/contacts/{created_contact}"
+    headers = {
+        "Authorization": f"Bearer {auth_token}",
+        "Content-Type": "application/json"
+    }
+
+    body = {
+        "firstName": "Amy",
+        "lastName": "Miller",
+        "birthdate": "1992-02-02",
+        "email": "amiller@fake.com",
+        "phone": "8005554242",
+        "street1": "13 School St.",
+        "street2": "Apt. 5",
+        "city": "Washington",
+        "stateProvince": "QC",
+        "postalCode": "A1A1A1",
+        "country": "Canada"
+    }
+
+    response = requests.put(url, json=body, headers=headers)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["firstName"] == "Amy"
+    assert data["lastName"] == "Miller"
+    assert data["owner"] is not None
+
+
+def test_update_contact_bad_request_put_method(auth_token, base_url,
+                                               created_contact,
+                                               cleanup_contacts):
+    """TC020: Unsuccessful update contact
+     via empty body and using PUT method"""
+    url = f"{base_url}/contacts/{created_contact}"
+    headers = {
+        "Authorization": f"Bearer {auth_token}",
+        "Content-Type": "application/json"
+    }
+
+    body = {}
+
+    response = requests.put(url, json=body, headers=headers)
+    assert response.status_code == 400
+
+    response_json = response.json()
+
+    assert "errors" in response_json
+    assert "message" in response_json
+
+    assert "firstName" in response_json["errors"]
+    assert "lastName" in response_json["errors"]
+
+    assert (response_json["errors"]["firstName"]["message"] ==
+            "Path `firstName` is required.")
+    assert (response_json["errors"]["lastName"]["message"] ==
+            "Path `lastName` is required.")
+
+
+def test_update_contact_unauthorized_put_method(base_url, created_contact,
+                                                cleanup_contacts):
+    """TC021: Unsuccessful update contact
+     without auth token and using PUT method"""
+    url = f"{base_url}/contacts/{created_contact}"
+    headers = {"Content-Type": "application/json"}
+
+    body = {
+        "firstName": "Amy",
+        "lastName": "Miller",
+        "birthdate": "1992-02-02",
+        "email": "amiller@fake.com",
+        "phone": "8005554242",
+        "street1": "13 School St.",
+        "street2": "Apt. 5",
+        "city": "Washington",
+        "stateProvince": "QC",
+        "postalCode": "A1A1A1",
+        "country": "Canada"
+    }
+
+    response = requests.put(url, json=body, headers=headers)
+
+    assert response.status_code == 401
+    assert response.json().get("error") == ("Please "
+                                            "authenticate.")
+
+
+def test_update_contact_success_firstname(auth_token, base_url,
+                                          created_contact, cleanup_contacts):
+    """TC022:Successful update contact first name using PATCH method"""
+    url = f"{base_url}/contacts/{created_contact}"
+    headers = {
+        "Authorization": f"Bearer {auth_token}",
+        "Content-Type": "application/json"
+    }
+
+    body = {
+        "firstName": "Anna",
+    }
+
+    response = requests.patch(url, json=body, headers=headers)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["firstName"] == "Anna"
+    assert data["owner"] is not None
+
+
+def test_update_contact_success_patch_method(auth_token, base_url,
+                                             created_contact,
+                                             cleanup_contacts):
+    """TC023: Successful update contact via empty body using PATCH method"""
+    url = f"{base_url}/contacts/{created_contact}"
+    headers = {
+        "Authorization": f"Bearer {auth_token}",
+        "Content-Type": "application/json"
+    }
+
+    body = {}
+
+    response = requests.patch(url, json=body, headers=headers)
+    assert response.status_code == 200
+
+    data = response.json()
+    assert data["firstName"] == "John"
+    assert data["lastName"] == "Doe"
+    assert data["owner"] is not None
+
+
+def test_update_contact_unauthorized_patch_method(base_url,
+                                                  created_contact,
+                                                  cleanup_contacts):
+    """TC024: Unsuccessful update contact
+     without auth token and using PATCH method"""
+    url = f"{base_url}/contacts/{created_contact}"
+    headers = {"Content-Type": "application/json"}
+
+    body = {
+        "firstName": "Anna",
+    }
+
+    response = requests.patch(url, json=body, headers=headers)
+
+    assert response.status_code == 401
+    assert response.json().get("error") == ("Please "
+                                            "authenticate.")
+
+
+def test_delete_contact_success(auth_token, base_url, created_contact):
+    """TC025: Successful delete contact with correct data"""
+    url = f"{base_url}/contacts/{created_contact}"
+    headers = {"Authorization": f"Bearer {auth_token}"}
+
+    response = requests.delete(url, headers=headers)
+    assert response.status_code == 200
+
+    response = requests.get(url, headers=headers)
+    assert response.status_code == 404
+
+
+def test_delete_contact_unauthorized(base_url, created_contact,
+                                     cleanup_contacts):
+    """TC026: Unsuccessful delete contact without auth token"""
+    url = f"{base_url}/contacts/{created_contact}"
+
+    response = requests.delete(url)
+
+    assert response.status_code == 401
+    assert response.json().get("error") == ("Please "
+                                            "authenticate.")

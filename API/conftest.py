@@ -7,12 +7,11 @@ import requests
 from API.random_data import generate_email, generate_string
 from API import test_data
 
-
 MAIN_URL = "https://thinking-tester-contact-list.herokuapp.com"
 
 user_data = {
-    "email": "testexample@example.com",
-    "password": "Tester11"
+    "email": "Aleksmason@gmail.com",
+    "password": "sangvin123"
 }
 
 
@@ -86,3 +85,31 @@ def user_with_token(register_user, base_url):
         }
     raise RuntimeError(f"Authorization error: {response.status_code},"
                        f" {response.text}")
+
+    
+@pytest.fixture(scope="function")
+def created_contact(auth_token, base_url):
+    """Fixture create contact"""
+    url = f"{base_url}/contacts"
+    headers = {
+        "Authorization": f"Bearer {auth_token}",
+        "Content-Type": "application/json"
+    }
+    body = {
+        "firstName": "John",
+        "lastName": "Doe",
+        "birthdate": "1970-01-01",
+        "email": "jdoe@fake.com",
+        "phone": "8005555555",
+        "street1": "1 Main St.",
+        "street2": "Apartment A",
+        "city": "Anytown",
+        "stateProvince": "KS",
+        "postalCode": "12345",
+        "country": "USA"
+    }
+
+    response = requests.post(url, json=body, headers=headers)
+    data = response.json()
+    contact_id = data["_id"]
+    return contact_id
