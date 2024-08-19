@@ -2,6 +2,8 @@
 API tests to check the functionality of the contact list.
 """
 import requests
+from API.random_data import generate_email, generate_string
+from API import test_data
 
 
 def test_delete_user_unauthorized(base_url):
@@ -132,6 +134,105 @@ def test_get_contact_list_unauthorized(base_url):
                                             "authenticate.")
 
 
+def test_register_user_success(base_url):
+    """TC001: Register User - 200 OK"""
+    url = f"{base_url}/users"
+    first_name = generate_string(3, 6)
+    last_name = generate_string(5, 10)
+    email = generate_email()
+    body = {
+        "firstName": first_name,
+        "lastName": last_name,
+        "email": email,
+        "password": "Tester11"
+    }
+    response = requests.post(url, json=body)
+    assert response.status_code == 201
+    assert response.json().keys() == {"user", "token"}
+    assert response.json().get("user").get("firstName") == first_name
+    assert response.json().get("user").get("lastName") == last_name
+    assert response.json().get("user").get("email") == email.lower()
+
+
+def test_add_user_email_already_in_use(base_url, register_user):
+    """TC002: Add User - 400  Bad request 'Email address is already
+     in use'"""
+    url = f"{base_url}/users"
+    first_name = generate_string(3, 6)
+    last_name = generate_string(5, 10)
+    body = {
+        "firstName": first_name,
+        "lastName": last_name,
+        "email": test_data.u_email,
+        "password": "Tester11"
+    }
+    response = requests.post(url, json=body)
+    assert response.status_code == 400
+    assert response.json().get("message") == ("Email address is"
+                                              " already in use")
+
+
+def test_add_user_incorrect_body(base_url):
+    """TC003: Add User - 400 Bad request "User validation
+     failed" (Empty body)"""
+    url = f"{base_url}/users"
+    incorrect_body = {}
+    response = requests.post(url, json=incorrect_body)
+    assert response.status_code == 400
+    assert response.json().keys() == {"errors", "_message", "message"}
+    assert response.json().get("message") == ("User validation failed: "
+                                              "password: Path `password` is"
+                                              " required., lastName: Path "
+                                              "`lastName` is required., "
+                                              "firstName: Path `firstName` "
+                                              "is required.")
+
+
+def test_get_user_profile_success(auth_token, base_url):
+    """TC004: Get User Profile - 200 Ok"""
+    url = f"{base_url}/users/me"
+    headers = {
+        "Authorization": f"Bearer {auth_token}",
+    }
+
+    response = requests.get(url, headers=headers)
+    assert response.status_code == 200
+    assert response.json().keys() == {"_id", "firstName", "lastName",
+                                      "email", "__v"}
+    assert response.json().get("_id") == test_data.id_user_from_auth_token
+
+
+def test_get_user_profile_unauthorized(base_url):
+    """TC005: Get User Profile - 401 Unauthorized "Please authenticate."""
+    url = f"{base_url}/users/me"
+    headers = {}
+    response = requests.get(url, headers=headers)
+    assert response.status_code == 401
+    assert response.json().get("error") == "Please authenticate."
+
+
+def test_update_user_success(user_with_token, base_url):
+    """TC006: Update User - 200 Ok"""
+    url = f"{base_url}/users/me"
+    headers = {
+        "Authorization": f"Bearer {user_with_token['token']}",
+    }
+    first_name = generate_string(3, 6)
+    last_name = generate_string(5, 10)
+    email = generate_email()
+    body = {
+        "firstName": first_name,
+        "lastName": last_name,
+        "email": email,
+        "password": "myNewPassword"
+    }
+    response = requests.patch(url, headers=headers, json=body)
+    assert response.status_code == 200
+    assert response.json().get("firstName") == first_name
+    assert response.json().get("lastName") == last_name
+    assert response.json().get("email") == email.lower()
+    
+    
 def test_update_contact_success(auth_token, base_url,
                                 created_contact, cleanup_contacts):
     """TC019: Successful update contact

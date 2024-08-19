@@ -22,4 +22,4 @@ jobs:
           pip install -r requirements.txt
       - name: Analysing the code with pylint
         run: |
-          pylint --disable=C0103,R0903,R0801,E0401,W0201,W0621,W3101,W0613,W0246,R0913,R0801 **/*.py
+          pylint --disable=C0103,R0903,R0801,E0401,W0201,W0621,W0246,R0913,R0801,W3101,W0613 **/*.py
