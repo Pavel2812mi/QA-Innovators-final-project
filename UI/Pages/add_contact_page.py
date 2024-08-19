@@ -14,7 +14,8 @@ city = (By.ID, "city")
 state_province = (By.ID, "stateProvince")
 postal_code = (By.ID, "postalCode")
 country = (By.ID, "country")
-button = (By.ID, "submit")
+submit_button = (By.ID, "submit")
+cancel_button = (By.ID, "cancel")
 error_message = (By.XPATH, "//span[@id='error']")
 
 
@@ -81,7 +82,12 @@ class AddContactPage(BasePage):
 
     def click_submit_button(self):
         """Click submit button"""
-        btn = self.find_element(button)
+        btn = self.find_element(submit_button)
+        btn.click()
+
+    def click_cancel_button(self):
+        """Click cancel button"""
+        btn = self.find_element(cancel_button)
         btn.click()
 
     def add_contact(self, fn, ln, bd, eml1, pn, str1, str2,
