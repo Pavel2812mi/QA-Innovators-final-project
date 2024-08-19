@@ -61,4 +61,12 @@ class SignUpPage:
             )
             return True
         except NoSuchElementException:
-            return False
+            return ""
+
+    def enter_data(self, name, lastname, email, password):
+        """Enter signup data"""
+        self.enter_first_name(name)
+        self.enter_last_name(lastname)
+        self.enter_email(email)
+        self.enter_password(password)
+        self.click_add_user()
