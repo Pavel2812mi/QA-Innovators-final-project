@@ -3,6 +3,8 @@
 url = "https://thinking-tester-contact-list.herokuapp.com/"
 eml = "testexample@example.com"
 psw = "Tester11"
+invalid_eml = "incorrect_email"
+invalid_psw = "incorrect_password"
 
 # ContactListPage
 url1 = "https://thinking-tester-contact-list.herokuapp.com/contactList"

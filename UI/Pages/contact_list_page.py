@@ -6,6 +6,7 @@ from UI.Pages.base_page import BasePage
 
 add_button = (By.ID, "add-contact")
 first_row = (By.XPATH, "//tr[@class='contactTableBodyRow'][1]")
+logout_button = (By.ID, "logout")
 
 
 class ContactListPage(BasePage):
@@ -81,3 +82,8 @@ class ContactListPage(BasePage):
             self.get_row_email(), self.get_row_phone(), self.get_row_address(),
             self.get_row_city(), self.get_row_country()
             ]
+
+    def click_logout_button(self):
+        """Click logout button"""
+        btn = self.find_element(logout_button)
+        btn.click()

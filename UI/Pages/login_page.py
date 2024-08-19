@@ -6,6 +6,7 @@ from UI.Pages.base_page import BasePage
 email = (By.ID, "email")
 password = (By.ID, "password")
 button = (By.ID, "submit")
+error = (By.ID, "error")
 
 
 class LoginPage(BasePage):
