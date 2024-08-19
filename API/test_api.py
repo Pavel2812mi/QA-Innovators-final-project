@@ -503,8 +503,8 @@ def test_login_user(base_url):
     assert response.status_code == 200
 
     data = response.json()
-    logger.info(f"Assert email from response: {data["user"]["email"]} "
-                f"with expected: {user_data["email"].lower()}")
+    logger.info(f"Assert email from response: {data['user']['email']} "
+                f"with expected: {user_data['email'].lower()}")
     assert data["user"]["email"] == user_data["email"].lower()
 
 
