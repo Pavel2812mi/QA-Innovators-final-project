@@ -1,7 +1,9 @@
 import pytest
+import allure
 from UI.Pages.signUppage import SignUpPage
 
 
+@allure.severity(allure.severity_level.CRITICAL)
 @pytest.mark.signup
 def test_successful_sign_up(driver, unique_email):
     """TC006: Check successful sign up for
@@ -17,6 +19,7 @@ def test_successful_sign_up(driver, unique_email):
                                        "signed up")
 
 
+@allure.severity(allure.severity_level.NORMAL)
 @pytest.mark.signup
 def test_invalid_data_sign_up(driver):
     """TC007: Check sign up for user with invalid data"""
@@ -37,6 +40,7 @@ def test_invalid_data_sign_up(driver):
                                              "email")
 
 
+@allure.severity(allure.severity_level.NORMAL)
 @pytest.mark.signup
 def test_existing_email_sign_up(driver, existing_email):
     """TC008: Check sign up for user with an existing email"""
@@ -52,6 +56,7 @@ def test_existing_email_sign_up(driver, existing_email):
         "No error message for existing email"
 
 
+@allure.severity(allure.severity_level.MINOR)
 @pytest.mark.signup
 def test_empty_fields_sign_up(driver):
     """TC009: Check sign up for user with empty fields"""
@@ -70,6 +75,7 @@ def test_empty_fields_sign_up(driver):
                                              "for empty fields")
 
 
+@allure.severity(allure.severity_level.MINOR)
 @pytest.mark.signup
 def test_cancel_sign_up(driver):
     """TC010: Check cancellation of sign-up process"""
