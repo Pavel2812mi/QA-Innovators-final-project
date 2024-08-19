@@ -1,9 +1,13 @@
 """
 API tests to check the functionality of the contact list.
 """
+import pytest
 import requests
+
+from API.conftest import user_data
 from API.random_data import generate_email, generate_string
 from API import test_data
+from logger import logger
 
 
 def test_delete_user_unauthorized(base_url):
@@ -231,8 +235,8 @@ def test_update_user_success(user_with_token, base_url):
     assert response.json().get("firstName") == first_name
     assert response.json().get("lastName") == last_name
     assert response.json().get("email") == email.lower()
-    
-    
+
+
 def test_update_contact_success(auth_token, base_url,
                                 created_contact, cleanup_contacts):
     """TC019: Successful update contact
@@ -405,3 +409,117 @@ def test_delete_contact_unauthorized(base_url, created_contact,
     assert response.status_code == 401
     assert response.json().get("error") == ("Please "
                                             "authenticate.")
+
+
+def test_update_user_unauthorized(base_url):
+    """TC007: Unsuccessful update user without auth token"""
+    url = f"{base_url}/users/me"
+
+    body = {
+        "firstName": "Updated",
+        "lastName": "Username",
+        "email": "test2@fake.com",
+        "password": "myNewPassword"
+    }
+
+    logger.info(f"Update user: {body}, without auth token.")
+    response = requests.patch(url, json=body)
+
+    logger.info(f"Assert actual response code: {response.status_code} "
+                f"with expected: 401.")
+    assert response.status_code == 401
+    logger.info(f"Assert response error message: "
+                f"{response.json().get("error")} "
+                f"with expected: 'Please authenticate'")
+    assert response.json().get("error") == ("Please "
+                                            "authenticate.")
+
+
+@pytest.mark.xfail(reason="Unexpected 200 response")
+def test_update_user_bad_request(base_url, auth_token):
+    """TC008: Unsuccessful update user without body"""
+    url = f"{base_url}/users/me"
+
+    headers = {
+        "Authorization": f"Bearer {auth_token}",
+        "Content-Type": "application/json"
+    }
+
+    body = {}
+
+    logger.info("Update user using empty body: {}.")
+    response = requests.patch(url, json=body, headers=headers)
+
+    logger.info(f"Assert actual response code: {response.status_code} "
+                f"with expected: 400.")
+    assert response.status_code == 400
+
+
+def test_logout_user(base_url, auth_token):
+    """TC009: Successful logout user"""
+    url = f"{base_url}/users/logout"
+
+    headers = {
+        "Authorization": f"Bearer {auth_token}",
+        "Content-Type": "application/json"
+    }
+
+    logger.info("Logout user using correct credentials.")
+    response = requests.post(url, headers=headers)
+
+    logger.info(f"Assert actual response code: {response.status_code} "
+                f"with expected: 200.")
+    assert response.status_code == 200
+
+
+def test_logout_user_unauthorized(base_url):
+    """TC010: Unsuccessful logout user without auth token"""
+    url = f"{base_url}/users/logout"
+
+    logger.info("Logout user without auth token.")
+    response = requests.post(url)
+
+    logger.info(f"Assert actual response code: {response.status_code} "
+                f"with expected: 401.")
+    assert response.status_code == 401
+    logger.info(f"Assert response error message: "
+                f"{response.json().get("error")} "
+                f"with expected: 'Please authenticate'")
+    assert response.json().get("error") == ("Please "
+                                            "authenticate.")
+
+
+def test_login_user(base_url):
+    """TC011: Successful login user"""
+    url = f"{base_url}/users/login"
+
+    body = user_data
+
+    logger.info("Login user using correct body.")
+    response = requests.post(url, json=body)
+
+    logger.info(f"Assert actual response code: {response.status_code} "
+                f"with expected: 200.")
+    assert response.status_code == 200
+
+    data = response.json()
+    logger.info(f"Assert email from response: {data["user"]["email"]} "
+                f"with expected: {user_data["email"].lower()}")
+    assert data["user"]["email"] == user_data["email"].lower()
+
+
+def test_delete_user(base_url, user_with_token):
+    """TC012: Successful delete user"""
+    url = f"{base_url}/users/me"
+
+    headers = {
+        "Authorization": f"Bearer {user_with_token['token']}",
+        "Content-Type": "application/json"
+    }
+
+    logger.info("Login user using correct authorization.")
+    response = requests.delete(url, headers=headers)
+
+    logger.info(f"Assert actual response code: {response.status_code} "
+                f"with expected: 200.")
+    assert response.status_code == 200
