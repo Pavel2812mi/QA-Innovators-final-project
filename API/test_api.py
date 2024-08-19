@@ -483,7 +483,7 @@ def test_logout_user_unauthorized(base_url):
                 f"with expected: 401.")
     assert response.status_code == 401
     logger.info(f"Assert response error message: "
-                f"{response.json().get("error")} "
+                f"{response.json().get('error')} "
                 f"with expected: 'Please authenticate'")
     assert response.json().get("error") == ("Please "
                                             "authenticate.")
