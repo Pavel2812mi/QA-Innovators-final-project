@@ -244,7 +244,7 @@ def test_update_user_success(user_with_token, base_url):
     assert response.json().get("firstName") == first_name
     assert response.json().get("lastName") == last_name
     assert response.json().get("email") == email.lower()
-    
+
 
 @allure.severity(allure.severity_level.CRITICAL)
 def test_update_contact_success(auth_token, base_url,
