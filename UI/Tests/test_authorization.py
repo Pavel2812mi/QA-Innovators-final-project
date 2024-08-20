@@ -1,12 +1,14 @@
 """Authorization tests"""
 
 import pytest
+import allure
 from UI.Pages.login_page import LoginPage, error, email, password
 from UI.Pages.contact_list_page import ContactListPage
 from UI.Test_data import test_data
 from logger import logger
 
 
+@allure.severity(allure.severity_level.CRITICAL)
 @pytest.mark.login
 def test_login_success(driver):
     """Test login successfully"""
@@ -18,6 +20,7 @@ def test_login_success(driver):
     logger.info("Test login successfully complete")
 
 
+@allure.severity(allure.severity_level.NORMAL)
 @pytest.mark.login_negative
 def test_login_invalid_email(driver):
     """Test login with incorrect email"""
@@ -27,6 +30,7 @@ def test_login_invalid_email(driver):
     logger.info("Test login with incorrect email successfully complete")
 
 
+@allure.severity(allure.severity_level.NORMAL)
 @pytest.mark.login_negative
 def test_login_invalid_password(driver):
     """Test login with incorrect password"""
@@ -37,6 +41,7 @@ def test_login_invalid_password(driver):
                 " successfully complete")
 
 
+@allure.severity(allure.severity_level.MINOR)
 @pytest.mark.login_negative
 def test_login_without_cred(driver):
     """Test login without entering credentials"""
@@ -47,6 +52,7 @@ def test_login_without_cred(driver):
                 " successfully complete")
 
 
+@allure.severity(allure.severity_level.NORMAL)
 @pytest.mark.logout
 def test_logout_success(driver, login_user):
     """Test logout successfully"""

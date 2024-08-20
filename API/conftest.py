@@ -86,7 +86,7 @@ def user_with_token(register_user, base_url):
     raise RuntimeError(f"Authorization error: {response.status_code},"
                        f" {response.text}")
 
-    
+
 @pytest.fixture(scope="function")
 def created_contact(auth_token, base_url):
     """Fixture create contact"""
