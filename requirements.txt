@@ -4,5 +4,6 @@ mypy
 ruff
 pylint
 pytest
+allure-pytest
 selenium
 requests
