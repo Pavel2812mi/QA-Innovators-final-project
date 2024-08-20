@@ -40,8 +40,8 @@ class BasePage:
             )
             return True
         except TimeoutException:
-            logger.error(f"The text: {text} wasn't"
-                         f" appeared in: {selector}.")
+            logger.info(f"The text: {text} wasn't"
+                        f" appeared in: {selector}.")
             return False
 
     def wait_url(self, driver, data):
