@@ -121,7 +121,7 @@ class AddContactPage(BasePage):
                     f"locator: {submit_button}.")
         btn = self.find_element(submit_button)
 
-        logger.info(f"Click submit button.")
+        logger.info("Click submit button.")
         btn.click()
 
     def click_cancel_button(self):
