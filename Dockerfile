@@ -1,8 +1,18 @@
-FROM python:3.9-slim
-RUN apt-get update && apt-get install -y python3-venv
-COPY requirements.txt /usr/src/app/
-RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
-RUN pip install pytest
-COPY . /usr/src/app/
-WORKDIR /usr/src/app
-CMD ["pytest", "--alluredir=allure-results"]
+FROM jenkins/jenkins:latest
+
+USER root
+
+RUN apt-get update
+RUN apt-get install pip
+RUN apt-get install python
+RUN apt-get install pytest
+RUN apt-get install wget
+
+ARG CHROME_VERSION="116.0.5845.96"
+RUN wget --no-verbose -O /tmp/chrome.deb https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}_amd64.deb \
+  && apt install -y /tmp/chrome.deb \
+  && rm /tmp/chrome.deb
+
+RUN apt-get install -yqq unzip
+RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
+RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
