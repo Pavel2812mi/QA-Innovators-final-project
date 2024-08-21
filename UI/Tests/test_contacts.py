@@ -1,7 +1,6 @@
 """Tests"""
 import pytest
 import allure
-
 from UI.Pages.login_page import LoginPage
 from UI.Pages.contact_list_page import ContactListPage
 from UI.Pages.add_contact_page import AddContactPage, first_name
@@ -12,7 +11,7 @@ from logger import logger
 
 
 @allure.severity(allure.severity_level.CRITICAL)
-@pytest.mark.add_contact
+@pytest.mark.critical
 def test_add_contact(driver, login_user):
     """Test add contact successfully"""
     assert test_data.url1 in driver.current_url
@@ -47,6 +46,7 @@ def test_add_contact(driver, login_user):
 
 
 @allure.severity(allure.severity_level.MINOR)
+@pytest.mark.extended
 def test_cancel_add_contact(driver, login_user):
     """Test cancel add contact successfully"""
 
@@ -58,10 +58,11 @@ def test_cancel_add_contact(driver, login_user):
     acp = AddContactPage(driver)
     acp.click_cancel_button()
     assert test_data.url1 in driver.current_url
+    logger.info("Test cancel add contact successfully complete")
 
 
 @allure.severity(allure.severity_level.CRITICAL)
-@pytest.mark.edit_contact
+@pytest.mark.smoke
 def test_edit_contact(driver, login_user, created_contact):
     """Test edit contact successfully"""
     clp = ContactListPage(driver)
@@ -90,6 +91,7 @@ def test_edit_contact(driver, login_user, created_contact):
 
 
 @allure.severity(allure.severity_level.MINOR)
+@pytest.mark.extended
 def test_cancel_edit_contact(driver, login_user, created_contact):
     """Test cancel edit contact successfully"""
 
@@ -112,10 +114,11 @@ def test_cancel_edit_contact(driver, login_user, created_contact):
     actual_result = cdp.get_all_contact_details_data()
     assert actual_result == expected_result
     cdp.click_return_button()
+    logger.info("Test cancel edit contact successfully complete")
 
 
 @allure.severity(allure.severity_level.CRITICAL)
-@pytest.mark.delete_contact
+@pytest.mark.smoke
 def test_delete_contact(driver):
     """Test delete contact successfully"""
     lp = LoginPage(driver)
@@ -148,7 +151,7 @@ def test_delete_contact(driver):
 
 
 @allure.severity(allure.severity_level.CRITICAL)
-@pytest.mark.view_contact
+@pytest.mark.critical
 def test_view_contact(driver, created_contact):
     """Test view contact successfully"""
     clp = ContactListPage(driver)
@@ -157,25 +160,21 @@ def test_view_contact(driver, created_contact):
         f"{test_data.fn} {test_data.ln}", test_data.bd, test_data.eml,
         test_data.pn, f"{test_data.str1} {test_data.str2}",
         f"{test_data.ct} {test_data.stpr} {test_data.pc}", test_data.cntr]
-
-    logger.info(f"Assert actual contact data: {actual_result} "
-                f"with expected: {expected_result}.")
     assert actual_result == expected_result
+    logger.info("Test view contact successfully complete")
 
 
 @allure.severity(allure.severity_level.MINOR)
-@pytest.mark.view_contact
+@pytest.mark.extended
 def test_view_empty_contact(driver, login_user):
     """Test view empty list contact successfully"""
     clp = ContactListPage(driver)
-    if_row = clp.find_row()
-
-    logger.info(f"Assert that there is no any row in the table: {if_row}")
-    assert if_row is False
+    assert clp.find_row() is False
+    logger.info("Test view empty contact successfully complete")
 
 
 @allure.severity(allure.severity_level.NORMAL)
-@pytest.mark.add_contact
+@pytest.mark.smoke
 def test_add_contact_with_inv_data(driver, login_user):
     """Test add contact with invalid data unsuccessfully"""
     clp = ContactListPage(driver)
@@ -188,18 +187,13 @@ def test_add_contact_with_inv_data(driver, login_user):
                     test_data.inv_eml, test_data.inv_pn, test_data.str1,
                     test_data.str2, test_data.ct, test_data.stpr,
                     test_data.inv_pc, test_data.cntr)
-
-    actual_error_message = acp.get_error_message(
-        test_data.error_message_add_new_contact)
-    expected_error_message = test_data.error_message_add_new_contact
-
-    logger.info(f"Assert actual error message: {actual_error_message} "
-                f"with expected: {expected_error_message}.")
-    assert actual_error_message == expected_error_message
+    assert (acp.get_error_message(test_data.error_message_add_new_contact)
+            == test_data.error_message_add_new_contact)
+    logger.info("Test add contact with invalid data successfully complete")
 
 
 @allure.severity(allure.severity_level.MINOR)
-@pytest.mark.add_contact
+@pytest.mark.smoke
 def test_add_contact_with_empty_data(driver, login_user):
     """Test add contact with empty data unsuccessfully"""
     clp = ContactListPage(driver)
@@ -212,10 +206,7 @@ def test_add_contact_with_empty_data(driver, login_user):
                     test_data.eml, test_data.pn, test_data.str1,
                     test_data.str2, test_data.ct, test_data.stpr,
                     test_data.pc, test_data.cntr)
-    actual_error_message = acp.get_error_message(
-        test_data.error_message_empty_add_new_contact)
-    expected_error_message = test_data.error_message_empty_add_new_contact
-
-    logger.info(f"Assert actual error message: {actual_error_message} "
-                f"with expected: {expected_error_message}.")
-    assert actual_error_message == expected_error_message
+    assert (acp.get_error_message(
+            test_data.error_message_empty_add_new_contact) ==
+            test_data.error_message_empty_add_new_contact)
+    logger.info("Test add contact with empty data successfully complete")

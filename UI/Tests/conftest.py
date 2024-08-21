@@ -1,19 +1,24 @@
 """Conftest module"""
+import uuid
 import pytest
 from selenium import webdriver
-
+from selenium.webdriver.chrome.options import Options
 from UI.Pages.add_contact_page import AddContactPage
 from UI.Pages.contact_details_page import ContactDetailsPage
 from UI.Pages.contact_list_page import ContactListPage
 from UI.Pages.login_page import LoginPage
 from UI.Test_data import test_data
-import uuid
 
 
 @pytest.fixture
 def driver():
-    """Fixture for initializing and quitting a Chrome WebDriver instance"""
-    chrome = webdriver.Chrome()
+    """Fixture for initializing and quitting a Chrome WebDriver instance
+     in headless mode"""
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome = webdriver.Chrome(options=chrome_options)
     chrome.implicitly_wait(5)
     chrome.get(test_data.url)
     yield chrome
