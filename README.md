@@ -21,6 +21,7 @@ Made by: Pavel Mitrofanov, Anastasia Solodukho, Alina Shautsova, Alex Kozhan
 ├── API/
 │   ├── __init__.py
 │   ├── conftest.py
+│   ├── Jenkinsfile
 │   ├── random_data.py
 │   ├── test_api.py            # API tests
 │   └── test_data.py           # API-related test data
@@ -34,6 +35,7 @@ Made by: Pavel Mitrofanov, Anastasia Solodukho, Alina Shautsova, Alex Kozhan
 │   │   ├── edit_contact_page.py
 │   │   ├── login_page.py
 │   │   └── signUppage.py
+│   ├── Jenkinsfile
 │   ├── Test_data/
 │   │   └── test_data.py       # Test data for UI
 │   └── Tests/                 # UI tests
@@ -42,6 +44,8 @@ Made by: Pavel Mitrofanov, Anastasia Solodukho, Alina Shautsova, Alex Kozhan
 │       ├── test_authorization.py
 │       ├── test_contacts.py
 │       └── test_signup.py
+├── Dockerfile
+├── logger.py                 # Module for logging
 ├── .gitignore                # Files and directories ignored by Git
 ├── pytest.ini                # Pytest configuration file
 ├── README.md                 # Project documentation
@@ -132,7 +136,9 @@ This command will start a Jenkins instance accessible at http://localhost:8080.
 
 To set up a Jenkins pipeline that builds the environment, installs dependencies, and runs tests, follow these steps:
 
-1. **Create a New Pipeline Job:**
+#### Configure Freestyle project
+
+1. **Create a New Freestyle project:**
    - In Jenkins, create a new freestyle project.
 
 2. **Configure GitHub repository:**
@@ -150,6 +156,28 @@ To set up a Jenkins pipeline that builds the environment, installs dependencies,
 4. **Configure allure report destination.**
 
 5. **Configure Allure Commandline installation.**
+
+#### Configure API and UI pipelines
+
+1. **Create a New UI/API Pipelines:**
+   - In Jenkins, create a new pipeline.
+
+2. **Configure GitHub repository:**
+   - Select *GitHub project* and configure it.
+
+3. **Select SCM pipeline path:** 
+   - In *Pipeline Definition* select *Pipeline script from SCM*
+   - In *SCM* select *Git*
+   - Configure GitHub properties
+   - In *Script Path* input:
+     - For UI:
+       ```bash
+         UI/Jenkinsfile
+       ```
+     - For API:
+       ```bash
+         API/Jenkinsfile
+       ```
 
 ---
 
