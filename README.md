@@ -1,7 +1,5 @@
 # Final Project QA-Innovators
 
----
-
 ## About
 
 This project is an automated testing framework designed to validate the functionality of the following applications:
