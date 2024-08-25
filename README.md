@@ -157,9 +157,9 @@ To set up a Jenkins pipeline that builds the environment, installs dependencies,
 
 5. **Configure Allure Commandline installation.**
 
-#### Configure API and UI pipelines
+#### Configure Parameterized, API and UI pipelines
 
-1. **Create a New UI/API Pipelines:**
+1. **Create a New Parameterized/UI/API Pipelines:**
    - In Jenkins, create a new pipeline.
 
 2. **Configure GitHub repository:**
@@ -177,6 +177,10 @@ To set up a Jenkins pipeline that builds the environment, installs dependencies,
      - For API:
        ```bash
          API/Jenkinsfile
+       ```
+     - For Parameterized:
+       ```bash
+         Jenkinsfile
        ```
 
 ---
